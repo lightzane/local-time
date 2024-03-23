@@ -14,6 +14,7 @@ export default function App() {
   const [error, setError] = createSignal('');
   const [today, setToday] = createSignal(DateUtil.format(new Date()));
   const [outputTime, setOutputTime] = createSignal(0); // output to seconds
+  const [showAnalog, setShowAnalog] = createSignal(false);
 
   let inputRef!: HTMLInputElement;
   let interval: ReturnType<typeof setInterval>;
@@ -26,6 +27,13 @@ export default function App() {
     onCleanup(() => {
       clearInterval(interval);
     });
+  });
+
+  createEffect(() => {
+    const search = new URLSearchParams(window.location.search);
+    const a = search.get('a');
+
+    setShowAnalog(!!a);
   });
 
   function handleEnter(e: KeyboardEvent) {
@@ -125,16 +133,16 @@ export default function App() {
 
   return (
     <main class='relative flex items-center justify-center h-full mx-auto max-w-xs'>
-      <div class='w-full'>
-        <div class='flex items-center justify-center pb-5'>
-          <Clock />
-        </div>
+      <div class='w-full animate-enter'>
+        <Show when={showAnalog()}>
+          <div class='flex items-center justify-center pb-5'>
+            <Clock />
+          </div>
+        </Show>
 
         {/* Today */}
         <Show when={today()}>
-          <div class='font-mono text-center pb-5 text-sm animate-enter'>
-            {today()}
-          </div>
+          <div class='font-mono text-center pb-5 text-sm'>{today()}</div>
         </Show>
 
         <label
@@ -179,7 +187,7 @@ export default function App() {
             </p> */}
             <button
               type='button'
-              class='rounded-lg py-2 bg-dracula-purple font-semibold text-sm w-full animate-enter'
+              class='rounded-lg py-2 bg-dracula-purple font-semibold text-sm w-full'
               onClick={handleTimeConvert}>
               <span class='text-dracula-darker'>Convert</span>
             </button>

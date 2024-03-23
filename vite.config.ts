@@ -7,12 +7,12 @@ export default defineConfig({
     port: 4200,
   },
   base: '',
-  build: {
-    outDir: 'docs',
-    rollupOptions: {
-      output: {
-        format: 'umd',
-      },
-    },
-  },
+  // build: {
+  //   outDir: 'docs',
+  //   rollupOptions: {
+  //     output: {
+  //       format: 'umd',
+  //     },
+  //   },
+  // },
 });
